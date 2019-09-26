@@ -82,11 +82,16 @@ router.get('/:id', (req, res, next) => {
 router.post('/search', (req, res, next) => {
   let temp = {}
   const { letter, frequency } = req.body;
+  console.log(letter);
+  
 
   if (letter) temp.letter = letter;
   if (frequency) temp.frequency = frequency;
-
+  console.log(temp);
+  
   Data.find(temp).then((dataSearch) => {
+    console.log(dataSearch);
+    
     res.status(201).json(dataSearch );
   })
 })

@@ -11,4 +11,8 @@ router.get('/data', (req,res) => {
   res.render('data',)
 })
 
+router.get('/line', (req,res) => {
+  res.render('line',)
+})
+
 module.exports = router;
