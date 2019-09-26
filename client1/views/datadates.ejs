@@ -117,7 +117,8 @@
         $("#id").val("");
       });
     });
-
+//==========================================================
+//LoadDatadates
     const loadData = () => {
       $.ajax({
         url: `${apiUrl}`,
@@ -148,7 +149,8 @@
           console.log(e);
         });
     };
-
+//==========================================================
+//addDatadates
     const addData = () => {
       let letter = $("#letter")
         .val()
@@ -188,7 +190,9 @@
         alert("Anda Yakin ingin Menghapusnya? ");
       });
     };
+//==========================================================
 
+    //EditData
     const editData = () => {
       let id = $("#id").val();
       let letter = $("#letter").val();
@@ -215,6 +219,15 @@
       $("#frequency").val(item.frequency);
       $("#id").val(item._id);
       editData();
+    });
+//==========================================================
+    //SearchdataDates
+    $("#Sletter").keyup(function() {
+      $('#Sletter').val($('#Sletter').val());
+      searchData();
+    });
+    $("#Sfrequency").keyup(function() {
+      searchData();
     });
 
     const searchData = () => {
@@ -250,6 +263,8 @@
           });
           $("table tbody").html(html);
         });
+      }else{
+        loadData();
       }
     };
 

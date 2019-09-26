@@ -16,17 +16,17 @@
   </head>
 
   <body>
-    <div class="container">
+    <!-- <div class="container">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12 offset-1">
-            <div class="container-fluid">
-              <canvas id="myChart" width="400" height="100"></canvas>
-              </div>
+            <div class="container-fluid"> -->
+              <canvas id="myChart" width="1000" height="400"></canvas>
+              <!-- </div>
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
   </body>
 
   <script>
@@ -55,6 +55,12 @@
               label: "# of Votes",
               data: data.map(item => item.frequency),
               backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
                 "rgba(255, 99, 132, 0.2)",
                 "rgba(54, 162, 235, 0.2)",
                 "rgba(255, 206, 86, 0.2)",

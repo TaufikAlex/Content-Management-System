@@ -28,21 +28,31 @@
               <h3></h3>
               <input type="hidden" id="id" value="" />
               <div class="form-group">
-                <label for="letter" class="text-left">Letter</label>
+                <label for="tittle" class="text-left">Tittle</label>
                 <input
                   type="text"
                   class="form-control ml-3"
-                  id="letter"
+                  id="tittle"
                   placeholder="A"
                   required
                 />
               </div>
               <div class="form-group">
-                <label for="frequency" class="ml-3">Frequency</label>
+                <label for="lat" class="ml-3">lat</label>
                 <input
                   type="text"
                   class="form-control ml-3"
-                  id="frequency"
+                  id="lat"
+                  placeholder="0.0"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="lng" class="ml-3">lng</label>
+                <input
+                  type="text"
+                  class="form-control ml-3"
+                  id="lng"
                   placeholder="0.0"
                   required
                 />
@@ -56,27 +66,17 @@
 
         <h3>Search</h3>
         <hr />
-        <form>
+        <form class="col-md-10">
           <div class="form-row align-items-center">
             <div class="col-sm-5 my-1">
               <label class="sr-only" for="inlineFormInputName">Name</label>
               <input
                 type="text"
                 class="form-control"
-                id="Sletter"
-                placeholder="Letter"
+                id="Stittle"
+                placeholder="Tittle"
               />
             </div>
-            <div class="col-sm-5 my-1">
-              <label class="sr-only" for="inlineFormInputName">Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="Sfrequency"
-                placeholder="Frequency"
-              />
-            </div>
-          </div>
         </form>
       </div>
       <div class="container">
@@ -84,9 +84,10 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">letter</th>
-              <th scope="col">frequency</th>
-              <th scope="col">action</th>
+              <th scope="col">Tittle</th>
+              <th scope="col">Lat</th>
+              <th scope="col">lng</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -96,7 +97,7 @@
   </body>
 
   <script type="text/javascript">
-    const apiUrl = `http://localhost:4000/api/data`;
+    const apiUrl = `http://localhost:4000/api/maps`;
 
     $("#btn-add").click(() => {
       $("#div-add").toggle();
@@ -109,6 +110,7 @@
         e.preventDefault();
         if ($("#id").val() == "") {
           addData();
+          
           $("#div-add").hide();
         } else {
           editData();
@@ -129,8 +131,9 @@
           response.forEach((item, index) => {
             html += `<tr>
                         <th scope="col">${index + 1}</th>
-                        <td scope="col">${item.letter}</td>
-                        <td scope="col">${item.frequency}</td>
+                        <td scope="col">${item.tittle}</td>
+                        <td scope="col">${item.lat}</td>
+                        <td scope="col">${item.lng}</td>
                         <td scope="col">
                             <button class="btn btn-edit btn-success" data-target='${JSON.stringify(
                               item
@@ -150,18 +153,18 @@
     };
 
     const addData = () => {
-      let letter = $("#letter")
-        .val()
-        .toUpperCase();
-      let frequency = $("#frequency").val();
-      console.log(letter, frequency);
+      let tittle = $("#tittle").val().toUpperCase();
+      let lat = $("#lat").val();
+      let lng = $("#lng").val();
+      console.log(tittle, lat);
 
       $.ajax({
         url: `${apiUrl}`,
         method: "POST",
         data: {
-          letter: letter,
-          frequency: frequency
+          tittle: tittle,
+          lat: lat,
+          lng: lng
         }
       })
         .done(response => {
@@ -177,8 +180,9 @@
     });
 
     const deleteData = id => {
-      let letter = $("#letter").val();
-      let frequency = $("#frequency").val();
+      let tittle = $("#tittle").val();
+      let lat = $("#lat").val();
+      let lng = $("#lng").val();
 
       $.ajax({
         url: `${apiUrl}/${id}`,
@@ -191,15 +195,16 @@
 
     const editData = () => {
       let id = $("#id").val();
-      let letter = $("#letter").val();
-      let frequency = $("#frequency").val();
+      let tittle = $("#tittle").val();
+      let lat = $("#lat").val();
 
       $.ajax({
         url: `${apiUrl}/${id}`,
         method: "PUT",
         data: {
-          letter: letter,
-          frequency: frequency
+          tittle: tittle,
+          lat: lat,
+          lng: lng
         }
       }).done(response => {
         loadData();
@@ -211,48 +216,50 @@
       let item = JSON.parse(
         el.currentTarget.attributes["data-target"].nodeValue
       );
-      $("#letter").val(item.letter);
-      $("#frequency").val(item.frequency);
+      $("#tittle").val(item.tittle);
+      $("#lat").val(item.lat);
+      $("#lng").val(item.lng);
       $("#id").val(item._id);
       editData();
     });
 
-    $("#Sletter").keyup(function() {
+    $("#Stittle").keyup(function() {
       searchData();
     });
-    $("#Sfrequency").keyup(function() {
-      searchData();
-    });
+   
 
     const searchData = () => {
-      let letter = $("#Sletter").val().toUpperCase();
-      let frequency = $("#Sfrequency").val();
-      console.log(letter);
+      let tittle = $("#Stittle").val().toUpperCase();
+      console.log(tittle);
 
-      if (letter || frequency) {
+      if (tittle || lat) {
         $.ajax({
           url: `${apiUrl}/search`,
           method: "POST",
           data: {
-            letter,
-            frequency
+            tittle
           }
         }).done(res => {
           let html = "";
           res.forEach((item, index) => {
             html += `<tr>
                         <th scope="col">${index + 1}</th>
-                        <td scope="col">${item.letter}</td>
-                        <td scope="col">${item.frequency}</td>
+                        <td scope="col">${item.tittle}</td>
+                        <td scope="col">${item.lat}</td>
+                        <td scope="col">${item.lng}</td>
                         <td scope="col">
-                            <button class="btn btn-edit btn-success" data-target='${JSON.stringify( item)}' type="button"> edit</button>
-                            <button  class="btn btn-delete btn-danger" type="button" data-target='${item._id}'> delete</button>    
+                            <button class="btn btn-edit btn-success" data-target='${JSON.stringify(
+                              item
+                            )}' type="button"> edit</button>
+                            <button  class="btn btn-delete btn-danger" type="button" data-target='${
+                              item._id
+                            }'> delete</button>    
                         </td>   
                     </tr>`;
           });
           $("table tbody").html(html);
         });
-      }else{
+      } else {
         loadData();
       }
     };
