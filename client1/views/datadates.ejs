@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <% include partials/headers %>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="container" style="margin-top: 10%">
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary" id="btn-add">
+            <i class="fa fa-plus "></i> Add
+          </button>
+        </div>
+
+        <div
+          id="div-add"
+          class="panel panel-default mt-3 mb-3"
+          style="display:none"
+        >
+          <div class="panel-body">
+            <form class="form-inline" id="form-add">
+              <h3></h3>
+              <input type="hidden" id="id" value="" />
+              <div class="form-group">
+                <label for="letter" class="text-left">Letter</label>
+                <input
+                  type="date"
+                  class="form-control ml-3"
+                  id="letter"
+                  placeholder="A"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="frequency" class="ml-3">Frequency</label>
+                <input
+                  type="text"
+                  class="form-control ml-3"
+                  id="frequency"
+                  placeholder="0.0"
+                  required
+                />
+              </div>
+              <button type="submit" id="btn-save" class="btn btn-success ml-3">
+                <span class="glyphicon glyphicon-save">Save</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <h3>Search</h3>
+        <hr />
+        <form>
+          <div class="form-row align-items-center">
+            <div class="col-sm-5 my-1">
+              <label class="sr-only" for="inlineFormInputName">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Sletter"
+                placeholder="Letter"
+              />
+            </div>
+            <div class="col-sm-5 my-1">
+              <label class="sr-only" for="inlineFormInputName">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="Sfrequency"
+                placeholder="Frequency"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="container">
+        <table class="table table-striped mt-5">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">letter</th>
+              <th scope="col">frequency</th>
+              <th scope="col">action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    const apiUrl = `http://localhost:4000/api/datadates`;
+
+    $("#btn-add").click(() => {
+      $("#div-add").toggle();
+    });
+
+    $("document").ready(() => {
+      loadData();
+
+      $("#form-add").submit(e => {
+        e.preventDefault();
+        if ($("#id").val() == "") {
+          addData();
+          $("#div-add").hide();
+        } else {
+          editData();
+          $("#div-add").hide();
+        }
+        $("#id").val("");
+      });
+    });
+
+    const loadData = () => {
+      $.ajax({
+        url: `${apiUrl}`,
+        method: "GET",
+        dataType: "json"
+      })
+        .done(response => {
+          let html = "";
+          response.forEach((item, index) => {
+            html += `<tr>
+                        <th scope="col">${index + 1}</th>
+                        <td scope="col">${item.letter}</td>
+                        <td scope="col">${item.frequency}</td>
+                        <td scope="col">
+                            <button class="btn btn-edit btn-success" data-target='${JSON.stringify(
+                              item
+                            )}' type="button"> edit</button>
+                            <button  class="btn btn-delete btn-danger" type="button" data-target='${
+                              item._id
+                            }'> delete</button>    
+                        </td>
+                            
+                    </tr>`;
+          });
+          $("table tbody").html(html);
+        })
+        .fail(e => {
+          console.log(e);
+        });
+    };
+
+    const addData = () => {
+      let letter = $("#letter")
+        .val()
+        .toUpperCase();
+      let frequency = $("#frequency").val();
+      console.log(letter, frequency);
+
+      $.ajax({
+        url: `${apiUrl}`,
+        method: "POST",
+        data: {
+          letter: letter,
+          frequency: frequency
+        }
+      })
+        .done(response => {
+          loadData();
+        })
+        .fail(e => {
+          console.log(e);
+        });
+    };
+
+    $("table tbody").on("click", ".btn-delete", el => {
+      deleteData(el.currentTarget.attributes["data-target"].nodeValue);
+    });
+
+    const deleteData = id => {
+      let letter = $("#letter").val();
+      let frequency = $("#frequency").val();
+
+      $.ajax({
+        url: `${apiUrl}/${id}`,
+        method: "DELETE"
+      }).done(response => {
+        loadData();
+        alert("Anda Yakin ingin Menghapusnya? ");
+      });
+    };
+
+    const editData = () => {
+      let id = $("#id").val();
+      let letter = $("#letter").val();
+      let frequency = $("#frequency").val();
+
+      $.ajax({
+        url: `${apiUrl}/${id}`,
+        method: "PUT",
+        data: {
+          letter: letter,
+          frequency: frequency
+        }
+      }).done(response => {
+        loadData();
+      });
+    };
+
+    $("table tbody").on("click", ".btn-edit", el => {
+      $("#div-add").show();
+      let item = JSON.parse(
+        el.currentTarget.attributes["data-target"].nodeValue
+      );
+      $("#letter").val(item.letter);
+      $("#frequency").val(item.frequency);
+      $("#id").val(item._id);
+      editData();
+    });
+
+    const searchData = () => {
+      let letter = $("#Sletter").val().toUpperCase();
+      let frequency = $("#Sfrequency").val();
+      console.log(letter);
+
+      if (letter || frequency) {
+        $.ajax({
+          url: `${apiUrl}/search`,
+          method: "POST",
+          data: {
+            letter,
+            frequency
+          }
+        }).done(res => {
+          let html = "";
+          res.forEach((item, index) => {
+            html += `<tr>
+                        <th scope="col">${index + 1}</th>
+                        <td scope="col">${item.letter}</td>
+                        <td scope="col">${item.frequency}</td>
+                        <td scope="col">
+                            <button class="btn btn-edit btn-success" data-target='${JSON.stringify(
+                              item
+                            )}' type="button"> edit</button>
+                            <button  class="btn btn-delete btn-danger" type="button" data-target='${
+                              item._id
+                            }'> delete</button>    
+                        </td>
+                            
+                    </tr>`;
+          });
+          $("table tbody").html(html);
+        });
+      }
+    };
+
+    $("#Sletter").keyup(function() {
+      searchData();
+    });
+    
+  </script>
+</html>
