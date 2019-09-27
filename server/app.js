@@ -9,8 +9,7 @@ var cors = require('cors')
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 mongoose.connect('mongodb://localhost/cmsdb', {
-  useCreateIndex: true,
-  useNewUrlParser: true
+  useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true
 });;
 
 

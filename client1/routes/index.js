@@ -8,7 +8,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/login',(req,res,next) =>{
-  res.render('home/login')
+  res.render('adminpanel/login')
+})
+
+router.get('/dashboard',(req,res,next) =>{
+  res.render('dashboard')
 })
 
 router.get('/data', (req,res) => {
@@ -36,4 +40,5 @@ router.get('/map', (req,res) => {
   res.render('charts/maps')
 })
 //==================END CHARTS=====================
+
 module.exports = router;
