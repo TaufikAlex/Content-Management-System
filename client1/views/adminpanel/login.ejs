@@ -161,7 +161,7 @@
 		}).done(response => {
 			if(response.status){
 				localStorage.setItem('token', response.data.token)
-				localStorage.setItem('email', response.data.email)
+				localStorage.setItem('email', response.data.user.email)
 				window.location = "/dashboard"
 				
 			}else{
@@ -169,8 +169,8 @@
 				
 			}
 			
-		}).catch(err=>{
-			console.log(err);
+		}).catch(error=>{
+			console.log(error);
 			
 		})
 	}
