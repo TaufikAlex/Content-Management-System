@@ -34,15 +34,12 @@
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <a href=""><button class="btn btn-outline-success my-2 my-sm-0 btn-logout" type="button">Sign out</button></a>
+            <a href=""><button class="btn btn-outline-success my-2 my-sm-0 btn-logout" data-target="token" type="button">Sign out</button></a>
         </form>
     </div>
 </nav>
 <script>
-    $.ajax({
-        method:  "POST",
-        data:{
-            email
-        }
+    $('.btn-logout').click(() =>{
+        localStorage.clear();
     })
 </script>

@@ -118,6 +118,8 @@
         $("#id").val("");
       });
     });
+    // =================FUNCTION DELETE MESSAGE===============//
+  
 
     const loadData = () => {
       $.ajax({
@@ -136,9 +138,7 @@
                             <button class="btn btn-edit btn-success" data-target='${JSON.stringify(
                               item
                             )}' type="button"> edit</button>
-                            <button  class="btn btn-delete btn-danger" type="button" data-target='${
-                              item._id
-                            }'> delete</button>    
+                            <button  class="btn btn-delete btn-danger" type="button" data-target='${item._id}'> delete</button>    
                         </td>
                             
                     </tr>`;
@@ -268,7 +268,7 @@
         }
       }).done((data) =>{
         if(!data.valid){
-          window.location="/login"
+          window.location="/"
         }
       })
     }
