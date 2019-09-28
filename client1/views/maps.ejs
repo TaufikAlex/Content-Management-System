@@ -152,7 +152,8 @@
           console.log(e);
         });
     };
-
+//========================add data============
+//adddata
     const addData = () => {
       let tittle = $("#tittle").val().toUpperCase();
       let lat = $("#lat").val();
@@ -175,9 +176,13 @@
           console.log(e);
         });
     };
-
+//=======================
+//deleted data
     $("table tbody").on("click", ".btn-delete", el => {
+      var r = confirm("Are u sure Deleted!");
+      if (r == true) {
       deleteData(el.currentTarget.attributes["data-target"].nodeValue);
+      }
     });
 
     const deleteData = id => {
@@ -190,10 +195,10 @@
         method: "DELETE"
       }).done(response => {
         loadData();
-        alert("Anda Yakin ingin Menghapusnya? ");
       });
     };
-
+//=================================
+//edit data
     const editData = () => {
       let id = $("#id").val();
       let tittle = $("#tittle").val();
@@ -228,7 +233,8 @@
       searchData();
     });
    
-
+//================================================
+// Search data
     const searchData = () => {
       let tittle = $("#Stittle").val().toUpperCase();
       console.log(tittle);

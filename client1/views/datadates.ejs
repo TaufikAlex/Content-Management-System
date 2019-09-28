@@ -174,9 +174,12 @@
           console.log(e);
         });
     };
-
+//===============DELETE DATADATEs================
     $("table tbody").on("click", ".btn-delete", el => {
+      var r = confirm("Are u sure Deleted!");
+      if (r == true) {
       deleteData(el.currentTarget.attributes["data-target"].nodeValue);
+      }
     });
 
     const deleteData = id => {
@@ -188,7 +191,6 @@
         method: "DELETE"
       }).done(response => {
         loadData();
-        alert("Anda Yakin ingin Menghapusnya? ");
       });
     };
 //==========================================================
