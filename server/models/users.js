@@ -5,7 +5,7 @@ const saltRounds = 10;
 var jwt = require('jsonwebtoken');
 const secret = 'CMSDeveloper';
 
-const userSchema = new Schema({
+var userSchema = new Schema({
     email: {
         type: String,
         unique: true
@@ -28,28 +28,28 @@ userSchema.pre('save', function(next) {
     });
 });
 
-userSchema.methods.comparePassword = (plainPassword,password, done) => {
+userSchema.methods.comparePassword =function (plainPassword ,done)  {
     
-    console.log(this);
-    
-    bcrypt.compare(plainPassword, password).then((res)=> {
+    bcrypt.compare(plainPassword, this.password).then((res)=> {
         done(res);
-    }).catch((err)=> {
+    }).catch((err)=>{
         console.log(err);
         
     })
 }
 
-userSchema.methods.generateToken = ()=> {
+userSchema.methods.generateToken = function () {
     let user = this;
     delete user.password;
+    console.log('this user email> ',user.email);
+    
     let token = jwt.sign({email:user.email},secret);
     console.log(token);
     return token;
     
 }
 
-userSchema.statics.decodeToken = (token) => {
+userSchema.statics.decodeToken = function(token)  {
     return jwt.verify(token,secret);
 }
 

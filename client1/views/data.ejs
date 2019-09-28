@@ -103,6 +103,7 @@
     });
 
     $("document").ready(() => {
+      auth(localStorage.getItem("token"));
       loadData();
 
       $("#form-add").submit(e => {
@@ -256,5 +257,20 @@
         loadData();
       }
     };
+
+    const apiUrlusers = `http://localhost:4000/api/users/check`;
+    const auth = () => {
+      $.ajax ({
+        url : apiUrlusers,
+        method: "POST",
+        data: {
+          token: localStorage.getItem("token")
+        }
+      }).done((data) =>{
+        if(!data.valid){
+          window.location="/login"
+        }
+      })
+    }
   </script>
 </html>

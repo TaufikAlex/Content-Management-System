@@ -29,8 +29,6 @@ router.post('/register', function (req, res, next) {
 });
 
 router.post('/login', function (req, res, next) {
-  console.log(req.body);
-  
   const { email, password } = req.body;
   let response = {
     status: true,
@@ -38,15 +36,12 @@ router.post('/login', function (req, res, next) {
     data: null
   }
   User.findOne({ email }, (err, user) => {
-    console.log(user);
-    
     if (!user) {
       response.status = false;
       response.message = "email doesn't exist";
       return res.json(response);
     }
-    
-    user.comparePassword(password, user.password, (isValid) => {
+    user.comparePassword(password,(isValid) => {
       if (isValid) {
         response.message = "user is valid"
         user.password = undefined;
@@ -71,6 +66,7 @@ router.post('/check', function (req, res, next) {
     console.log("coba print data", data);
     if (data) {
       User.findOne({ email: data.email }, (err, user) => {
+        console.log("coba print data", data)
         if (!user) {
           res.json({ valid: false })
         } else {
