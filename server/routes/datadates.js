@@ -4,7 +4,7 @@ const Todo = require('../models/datadates');
 
 //==============Router GET(Read) Data=============
 router.get('/', function (req, res, next) {
-    Todo.find({},(req, res) =>{
+    Todo.find({}, (req, res) => {
 
     }).then((data) => {
         res.status(201).json(data);
@@ -78,7 +78,7 @@ router.post('/search', (req, res, next) => {
     let temp = {}
     const { letter, frequency } = req.body;
 
-    if (letter) temp.letter = letter;
+    if (letter) temp.letter = { $regex: letter, $options: 'i' };
     if (frequency) temp.frequency = frequency;
 
     Todo.find(temp).then((datadateSearch) => {

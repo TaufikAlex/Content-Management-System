@@ -2,6 +2,17 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/users')
 
+
+
+router.get('/',(req,res,next) => {
+  User.findOne({},(req, res) => {
+    console.log(res);
+    
+  }).then((data) => {
+    res.status(201).json(data);
+  })
+})
+
 /* GET users listing. */
 router.post('/register', function (req, res, next) {
   const { email, password, retypepassword } = req.body;

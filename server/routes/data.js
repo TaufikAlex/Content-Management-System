@@ -84,8 +84,8 @@ router.post('/search', (req, res, next) => {
   const { letter, frequency } = req.body;
   console.log(letter);
   
-
-  if (letter) temp.letter = letter;
+  //$regex property of temp.letter and $options property of temp.letter
+  if (letter) temp.letter = {$regex: letter, $options: 'i'};
   if (frequency) temp.frequency = frequency;
   console.log(temp);
   

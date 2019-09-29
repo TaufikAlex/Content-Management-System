@@ -15,7 +15,6 @@
       crossorigin="anonymous"
     />
     <% include ../partials/navcharts %>
-
   </head>
 
   <body>
@@ -24,7 +23,12 @@
             <div class="row">
                 <div class="col-10 offset-1">
                     <div class="container-fluid"> -->
-    <canvas id="myChart" width="1000" height="330" style="margin-top: 5%"></canvas>
+    <canvas
+      id="myChart"
+      width="1000"
+      height="330"
+      style="margin-top: 5%"
+    ></canvas>
     <!-- </div>
                 </div>
             </div>
@@ -48,7 +52,7 @@
 
     const result = data => {
       var ctx = document.getElementById("myChart").getContext("2d");
-
+      const colors = data.map(d => `rgba(${[0, 0, 0].map(x => Math.floor(Math.random() * 256)).join(", ")}, 0.6)`);
       var myChart = new Chart(ctx, {
         type: "bar",
         data: {
@@ -57,31 +61,8 @@
             {
               label: "Frequency",
               data: data.map(item => item.frequency),
-              backgroundColor: [
-                  
-                "rgba(216, 27, 96, 0.6)",
-                "rgba(3, 169, 244, 0.6)",
-                "rgba(255, 152, 0, 0.6)",
-                "rgba(29, 233, 182, 0.6)",
-                "rgba(156, 39, 176, 0.6)",
-                "rgba(216, 27, 96, 0.6)",
-                "rgba(3, 169, 244, 0.6)",
-                "rgba(255, 152, 0, 0.6)",
-                "rgba(29, 233, 182, 0.6)",
-                "rgba(156, 39, 176, 0.6)"
-              ],
-              borderColor: [
-                "rgba(216, 27, 96, 1)",
-                "rgba(3, 169, 244, 1)",
-                "rgba(255, 152, 0, 1)",
-                "rgba(29, 233, 182, 1)",
-                "rgba(156, 39, 176, 1)",
-                "rgba(216, 27, 96, 1)",
-                "rgba(3, 169, 244, 1)",
-                "rgba(255, 152, 0, 1)",
-                "rgba(29, 233, 182, 1)",
-                "rgba(156, 39, 176, 1)"
-              ],
+              backgroundColor: colors,
+              borderColor: colors,
               borderWidth: 1
             }
           ]

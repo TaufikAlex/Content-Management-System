@@ -78,7 +78,7 @@ router.post('/search', (req, res, next) => {
     let temp = {}
     const { tittle, lat, lng } = req.body;
 
-    if (tittle) temp.tittle = tittle;
+    if (tittle) temp.tittle = {$regex: tittle, $options: 'i'};
     if (lat) temp.lat = lat;
     if (lng) temp.lng = lng;
 
